@@ -66,6 +66,63 @@ WITH consolidado AS (
 SELECT faixa_atraso, qtd_faturas, valor_aberto, CONCAT(CAST(taxa_provisao*100 AS INT), '%') as taxa_provisao, ROUND(valor_aberto * taxa_provisao, 2) as provisao_necessaria FROM consolidado;
 ```
 
+```sql
+# Definimos taxas gerenciais (simuladas) de telecomunicações para provisão:
+# - 1 a 30 dias: 2% de risco
+# - 31 a 60 dias: 10% de risco
+# - 61 a 90 dias: 50% de risco
+# - Mais de 90 dias: 100% de risco (calote provável)
+
+    WITH consolidado_faixas AS (
+        SELECT 
+            '1 a 30 dias' as faixa_atraso,
+            SUM(valor_fatura) as valor_total_aberto,
+            COUNT(fatura_id) as qtd_faturas,
+            0.02 as taxa_pdd
+        FROM df_aging_list
+        WHERE flg_1_30 = 1
+        
+        UNION ALL
+        
+        SELECT 
+            '31 a 60 dias' as faixa_atraso,
+            SUM(valor_fatura) as valor_total_aberto,
+            COUNT(fatura_id) as qtd_faturas,
+            0.10 as taxa_pdd
+        FROM df_aging_list
+        WHERE flg_31_60 = 1
+        
+        UNION ALL
+        
+        SELECT 
+            '61 a 90 dias' as faixa_atraso,
+            SUM(valor_fatura) as valor_total_aberto,
+            COUNT(fatura_id) as qtd_faturas,
+            0.50 as taxa_pdd
+        FROM df_aging_list
+        WHERE flg_61_90 = 1
+        
+        UNION ALL
+        
+        SELECT 
+            'Mais de 90 dias' as faixa_atraso,
+            SUM(valor_fatura) as valor_total_aberto,
+            COUNT(fatura_id) as qtd_faturas,
+            1.00 as taxa_pdd
+        FROM df_aging_list
+        WHERE flg_90_mais = 1
+    )
+    SELECT 
+        faixa_atraso,
+        COALESCE(qtd_faturas, 0) as qtd_faturas,
+        COALESCE(valor_total_aberto, 0.0) as valor_total_aberto,
+        taxa_pdd,
+        ROUND(COALESCE(valor_total_aberto, 0.0) * taxa_pdd, 2) as valor_pdd_calculado
+    FROM consolidado_faixas
+
+
+```
+
 ---
 
 ### Resultados Obtidos na AWS
