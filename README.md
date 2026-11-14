@@ -1,4 +1,4 @@
-🚀 **Engenharia de Dados aplicada ao Setor Financeiro: Construindo a Medallion Architecture para Cálculo de PDD em Telecom na AWS**
+# Engenharia de Dados aplicada ao Setor de Telecom: Construindo um Data Lake para Cálculo de PDD em Telecom
 
 Compartilho o resultado da primeira fase de um projeto prático focado em resolver um desafio crítico no setor de Telecomunicações: o cálculo automatizado e a mensuração da **Provisão para Devedores Duvidosos (PDD)**.
 
