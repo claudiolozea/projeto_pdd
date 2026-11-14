@@ -10,6 +10,8 @@ A **PDD** é uma reserva contábil obrigatória que previne perdas financeiras d
 
 Para processar esses volumes de forma escalável, adotei a **Arquitetura Medallion (Bronze, Silver e Gold)** com serviços gerenciados da AWS:
 
+![Arquitetura do Projeto](docs/data_lake_aws_diagrama_horizontal.jpg)
+
 ```
 [ Fontes de Dados ] (Sistemas de Billing, CRM, Legacy)
         │
