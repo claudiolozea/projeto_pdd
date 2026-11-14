@@ -1,12 +1,12 @@
-# Engenharia de Dados aplicada ao Setor de Telecom: Construindo um Data Lake para Cálculo de PDD em Telecom
+# Gestão de Inadimplência em Telecom: Como Automatizei o Cálculo de PDD na AWS
 
 Compartilho o resultado da primeira fase de um projeto prático focado em resolver um desafio crítico no setor de Telecomunicações: o cálculo automatizado e a mensuração da **Provisão para Devedores Duvidosos (PDD)**.
 
-### 📌 O que é PDD e qual seu impacto em Telecom?
+### O que é PDD e qual seu impacto em Telecom?
 
 A **PDD** é uma reserva contábil obrigatória que previne perdas financeiras decorrentes da inadimplência de clientes. Em Telecom, empresa com milhões de assinaturas recorrentes e alto volume transacional diário, gerenciar o risco de crédito exige um controle preciso da **Aging List** (faixas de atraso dos títulos em aberto). Sem dados limpos e pipelines performáticos, o risco de distorção na DRE contábil é elevado.
 
-### ☁️ Arquitetura da Solução na AWS
+### Arquitetura da Solução na AWS
 
 Para processar esses volumes de forma escalável, adotei a **Arquitetura Medallion (Bronze, Silver e Gold)** com serviços gerenciados da AWS:
 
@@ -20,7 +20,7 @@ Para processar esses volumes de forma escalável, adotei a **Arquitetura Medalli
 
 * **Governança & Consumo:** Catálogo unificado com **AWS Glue Data Catalog** e consultas interativas via **Amazon Athena**. (próximos passos)
 
-### 💻 Engenharia da Camada Gold: As Queries Spark SQL
+### Engenharia da Camada Gold: As Queries Spark SQL
 
 Para transformar os dados brutos e limpos em inteligência financeira, desenvolvi duas consultas principais na camada Gold:
 
@@ -68,7 +68,7 @@ SELECT faixa_atraso, qtd_faturas, valor_aberto, CONCAT(CAST(taxa_provisao*100 AS
 
 ---
 
-### 📊 Resultados Obtidos na AWS
+### Resultados Obtidos na AWS
 
 A execução bem-sucedida do pipeline no **Amazon EMR** gerou os seguintes resultados em produção:
 
@@ -97,14 +97,14 @@ A execução bem-sucedida do pipeline no **Amazon EMR** gerou os seguintes resul
 +----------------+-----------+------------------+---------------+---------------------+
 ```
 
-### 🔮 Próximos Passos (Ciência & Análise de Dados)
+### Próximos Passos (Ciência & Análise de Dados)
 
 Este projeto continua! Nas próximas fases pretendo evoluir a solução explorando:
 
-* 📈 **Analytics & BI:** Criação de dashboards executivos interativos via **Amazon QuickSight** / Power BI para visualização de safra e evolução do aging.
+* **Analytics & BI:** Criação de dashboards executivos interativos via **Amazon QuickSight** / Power BI para visualização de safra e evolução do aging.
 
-* 🤖 **Ciência de Dados & ML:** Construção de modelos preditivos no **Amazon SageMaker** para identificação precoce de clientes com propensão ao *Default* (inadimplência) antes do vencimento da fatura.
+* **Ciência de Dados & ML:** Construção de modelos preditivos para identificação precoce de clientes com propensão de inadimplência antes do vencimento da fatura.
 
-Seguimos aprendendo e evoluindo a cada pipeline! Sugestões e feedbacks de arquitetura são sempre muito bem-vindos. 💡
+Seguimos aprendendo e evoluindo a cada pipeline! Sugestões e feedbacks de arquitetura são sempre muito bem-vindos.
 
-#EngenhariaDeDados #DataEngineering #AWS #PySpark #SparkSQL #AmazonEMR #AmazonS3 #DataLake #PDD #Telecom #MedallionArchitecture #BigData #LearningInPublic
+
