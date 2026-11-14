@@ -4,7 +4,7 @@ Compartilho o resultado da primeira fase de um projeto prático focado em resolv
 
 ### O que é PDD e qual seu impacto em Telecom?
 
-A **PDD** é uma reserva contábil obrigatória que previne perdas financeiras decorrentes da inadimplência de clientes. Em Telecom, empresa com milhões de assinaturas recorrentes e alto volume transacional diário, gerenciar o risco de crédito exige um controle preciso da **Aging List** (faixas de atraso dos títulos em aberto). Sem dados limpos e pipelines performáticos, o risco de distorção na DRE contábil é elevado.
+A **PDD** é uma reserva contábil obrigatória que previne perdas financeiras decorrentes da inadimplência de clientes. Em Telecom, empresa com milhões de assinaturas recorrentes e alto volume transacional diário, gerenciar o risco de crédito e inadimplencia exige um controle preciso da **Aging List** (faixas de atraso dos títulos em aberto). Sem dados limpos e pipelines performáticos, o risco de distorção na DRE contábil é elevado.
 
 ### Arquitetura da Solução na AWS
 
@@ -14,7 +14,7 @@ Para processar esses volumes de forma escalável, adotei a **Arquitetura Medalli
 
 * **Ingestão & Camada Bronze (Raw):** Armazenamento em arquivos CSV brutos no **Amazon S3**.
 
-* **Camada Silver (Trusted):** Leitura, limpeza de schema, validação e tipagem forte (`to_date`, `decimal`, etc.) via **PySpark** no **Amazon EMR**, persistidos em formato **Apache Parquet** particionado por `ano` e `mes`.
+* **Camada Silver (Trusted):** Leitura, limpeza de schema, validação e tipagem forte (`to_date`, `decimal`, etc.) via **PySpark** no **Amazon EMR**, persistidos em formato **Apache Parquet** particionado por `ano` e `mes`. Operadoras lidam com altíssimo volume transacional diário (milhões de faturas). O particionamento em colunas chave combinado com a compressão colunar do Parquet garante a leitura apenas das pastas do período consultado, reduzindo drasticamente o volume de dados escaneados no Amazon S3 e acelerando queries analíticas massivas no Amazon Athena, além de otimizar custos de armazenamento e processamento.
 
 * **Camada Gold (Business):** Processamento analítico em **Spark SQL** executando cruzamentos (`LEFT JOIN`) entre faturas e pagamentos para classificar o atraso em faixas de risco (1-30, 31-60, 61-90 e 90+ dias) e aplicar as taxas de provisão gerenciais.
 
